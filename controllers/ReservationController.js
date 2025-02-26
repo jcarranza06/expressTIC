@@ -1,8 +1,7 @@
-// Imports
-
 // Import the models
 const Reservation = require('../models/ReservationModel')
 const Offer = require("../models/OfferModel")
+
 // Use the dotenv to load the .env file
 const dotenv = require("dotenv");
 dotenv.config();

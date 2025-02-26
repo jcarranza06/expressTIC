@@ -19,7 +19,8 @@ exports.signup = async(req, res) => {
         {
             username: req.body.username,
             email: req.body.email,
-            password: hashPassword
+            password: hashPassword,
+            type: req.body.type
         }
     );
 
@@ -34,7 +35,7 @@ exports.signup = async(req, res) => {
     }
     
     await newUser.save();
-    return res.status(201).json({message: "User has been created. Email sent."});     
+    return res.status(201).json({message: "User created."});     
 };
 
 // Login
@@ -61,13 +62,21 @@ exports.login = async(req, res) => {
     }
 };
 
+// Get user info
+exports.getUser = async(req, res) => {
+    const userId = req.user._id
+    const user = await User.findById(userId);
+    user.password = undefined;
+    return res.status(200).json(user);
+};
+
 // Check token' validity, get a new access token using the refresh token if neccesary.
 exports.authenticate = (req, res) => {
     // Get the access token from the headers
     const access = req.headers.authorization;
 
     if (!access) {
-        return res.status(401).json({ message: "Access token required" });
+        return res.status(401).json({ error: "Access token required" });
     }
 
     // Try to authenticate the user using the access token
@@ -75,24 +84,11 @@ exports.authenticate = (req, res) => {
         jwt.verify(access, process.env.JWT_SECRET_KEY, (err, decoded) => {
             // If the access token is still valid, return it again
             if (!err || decoded) {
-                return res.status(200).json({ accessToken: access,message: 'Access token still valid'});
+                return res.status(200).json({ accessToken: access, message: 'Access token still valid'});
             // If the token is invalid, return error
             }else {
-                return res.status(401).json({ message: 'Access token expired.' });
+                return res.status(401).json({ error: 'Access token expired.' });
             } 
         });
     }
-};
-  
-// Get user info
-exports.getUser = (req, res) => {
-    jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY, async(err, decoded) => {
-        if (err || !decoded) {
-            return res.status(401).json({ message: 'Invalid/expired token' });
-        } else {
-            const user = await User.findById(decoded._id);
-            user.password = undefined;
-            return res.status(200).json(user);
-        }
-    });
 };

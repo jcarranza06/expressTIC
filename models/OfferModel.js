@@ -23,6 +23,12 @@ const offerSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    reserved: {
+        type: Number,
+        required: true,
+        min: 0,
+        default: 0
+    },
     creation: {
         type: Date,
         required: true
@@ -40,6 +46,16 @@ const offerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },
+    location: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    businessName: {
+        type: String,
+        required: true,
+        trim: true
     }
 });
 
