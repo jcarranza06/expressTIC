@@ -15,7 +15,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Define the MongoDB connection mode
-var mongoUri = process.env.LOCAL_MONGO_URI;
+let mongoUri = process.env.LOCAL_MONGO_URI;
 
 // Create connection to MongoDB
 const mongoose = require("mongoose");
@@ -26,12 +26,12 @@ mongoose.connect(mongoUri, {}).then(() => { console.log('Connected to MongoDB') 
 const UserRoutes = require("./routes/UserRoute");
 const OfferRoutes = require("./routes/OfferRoute");
 const ReservationRoutes = require("./routes/ReservationRoute")
-//const MovieRoutes = require("./routes/MovieRoute");
+const DonationRoutes = require("./routes/DonationRoute")
 
 app.use("/user", UserRoutes);
 app.use("/offer", OfferRoutes);
-app.use("/reservation", ReservationRoutes)
-//app.use("/movie", MovieRoutes);
+app.use("/reservation", ReservationRoutes);
+app.use("/donation", DonationRoutes)
 
 // Start the server
 app.listen(3000, () => {

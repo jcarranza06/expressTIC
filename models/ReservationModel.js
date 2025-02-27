@@ -22,8 +22,13 @@ const reservationSchema = new mongoose.Schema({
     },
     paymentType: {
         type: String,
-        enum: ["contraentrega", "virtual"],
+        enum: ["contraentrega", "virtual", "Donacion"],
         required: true
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 1
     }
 });
 

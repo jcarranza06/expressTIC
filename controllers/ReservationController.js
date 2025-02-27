@@ -7,11 +7,11 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 exports.makeReservation = async (req, res) => {
-
-    const { receiver, offerId, collection, paymentType } = req.body;
+    const receiver = req.user._id;
+    const { offerId, collection, paymentType, quantity } = req.body;
 
     // Validar que se envíen los datos requeridos
-    if (!receiver || !offerId || !collection || !paymentType) {
+    if (!receiver || !offerId || !collection || !paymentType || !quantity) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
@@ -22,12 +22,13 @@ exports.makeReservation = async (req, res) => {
     }
 
     // Verificar si hay unidades disponibles
-    if (offer.available <= 0) {
+    if (offer.available < quantity) {
         return res.status(400).json({ error: "No hay unidades disponibles para esta oferta" });
     }
 
     // Reducir la cantidad disponible de la oferta
-    offer.available -= 1;
+    offer.available -= quantity;
+    offer.reserved += quantity;
     await offer.save();
 
     // Crear la reserva
@@ -35,7 +36,8 @@ exports.makeReservation = async (req, res) => {
         receiver,
         collection,
         offer: offerId,
-        paymentType
+        paymentType,
+        quantity
     });
 
     await newReservation.save();
