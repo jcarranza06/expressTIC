@@ -8,10 +8,10 @@ dotenv.config();
 
 exports.makeReservation = async (req, res) => {
     const receiver = req.user._id;
-    const { offerId, collection, paymentType, quantity } = req.body;
+    const { offerId, paymentType, quantity } = req.body;
 
     // Validar que se envíen los datos requeridos
-    if (!receiver || !offerId || !collection || !paymentType || !quantity) {
+    if (!receiver || !offerId || !paymentType || !quantity) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
@@ -34,7 +34,6 @@ exports.makeReservation = async (req, res) => {
     // Crear la reserva
     const newReservation = new Reservation({
         receiver,
-        collection,
         offer: offerId,
         paymentType,
         quantity

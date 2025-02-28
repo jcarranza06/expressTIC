@@ -11,10 +11,6 @@ const reservationSchema = new mongoose.Schema({
         default: Date.now,
         required: true
     },
-    collection: {
-        type: Date,
-        required: true
-    },
     offer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Offer",

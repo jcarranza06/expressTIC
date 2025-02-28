@@ -19,7 +19,8 @@ exports.donate = async (req, res) => {
 
     const fund = await CommonDonationFund.findById("common_fund");
 
-    let newAmount = amount;
+    let newAmount = Number(amount);
+
     if (fund) {
         newAmount += fund.amount; // Add to the existing amount
     }
@@ -35,10 +36,10 @@ exports.donate = async (req, res) => {
 
 exports.requestDonation = async (req, res) => {
     const receiver = req.user._id;
-    const { offerId, collection } = req.body;
+    const { offerId } = req.body;
 
     // Validar que se envíen los datos requeridos
-    if (!receiver || !offerId || !collection) {
+    if (!receiver || !offerId ) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
@@ -91,7 +92,6 @@ exports.requestDonation = async (req, res) => {
     // Crear la reserva
     const newReservation = new Reservation({
         receiver,
-        collection,
         offer: offerId,
         paymentType: "Donacion",
         quantity: 1
