@@ -19,8 +19,7 @@ exports.create = async (req, res) => {
         expiration,
         image,
         location,
-        user,
-        businessName: req.user.username
+        user
     });
 
     await newOffer.save();
@@ -28,13 +27,17 @@ exports.create = async (req, res) => {
 };
 
 exports.getAllAvailable = async (req, res) => {
-    const offers = await Offer.find({ available: { $gt: 0 } });
+    const offers = await Offer.find({ available: { $gt: 0 } })
+        .populate("user", "username")
+        .exec();
+
     res.json(offers);
 };
 
-exports.getByUser = async (req, res) => {
+exports.getByBusiness = async (req, res) => {
     const userId = req.user._id;
-    const offers = await Offer.find({ user: userId });
+    const offers = await Offer.find({ user: userId })
+
     res.json(offers);
 };
 

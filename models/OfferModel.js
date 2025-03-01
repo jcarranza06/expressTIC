@@ -51,11 +51,6 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
-    },
-    businessName: {
-        type: String,
-        required: true,
-        trim: true
     }
 });
 
