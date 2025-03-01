@@ -39,9 +39,9 @@ exports.signup = async(req, res) => {
 };
 
 // Login
-exports.login = async(req, res) => {//throw new Error("Este es un error de prueba");
+exports.login = async(req, res) => {
     // Try to find the user
-    const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] });
+    const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] });
     if (!user) {
         return res.status(404).json({error:"User not found."});
     }
