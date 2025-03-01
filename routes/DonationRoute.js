@@ -5,7 +5,7 @@ let donationController = require('../controllers/DonationController.js')
 let auth = require("../middlewares/auth")
 
 // Create endpoints
-route.post('/donate', catchErrors(auth.authenticate), catchErrors(donationController.donate));
+route.post('/donate', catchErrors(donationController.donate));
 route.post('/requestDonation', catchErrors(auth.authenticate), catchErrors(donationController.requestDonation));
 
 module.exports = route;
