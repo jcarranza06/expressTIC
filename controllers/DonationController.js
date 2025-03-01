@@ -66,7 +66,7 @@ exports.requestDonation = async (req, res) => {
 
     // Si ha recibido más de 50,000 en la última semana, se rechaza la donación
     if (totalReceived.length > 0 && totalReceived[0].total >= 50000) {
-        return res.status(400).json({ error: "El usuario ha recibido más de 50,000 en donaciones esta semana." });
+        return res.status(400).json({ error: "Lo sentimos, no puedes recibir más donaciones por esta semana." });
     }
 
     // Buscar el fondo común
@@ -77,7 +77,7 @@ exports.requestDonation = async (req, res) => {
 
     // Verificar si el fondo tiene suficiente dinero
     if (commonDonationFund.amount < offer.price) {
-        return res.status(400).json({ error: "El fondo común no tiene suficiente dinero" });
+        return res.status(400).json({ error: "Lo sentimos, el fondo de donaciones no tiene suficiente dinero para esta compra." });
     }
 
     // Descontar el dinero del fondo
@@ -93,7 +93,7 @@ exports.requestDonation = async (req, res) => {
     const newReservation = new Reservation({
         receiver,
         offer: offerId,
-        paymentType: "Donacion",
+        isPaid: true,
         quantity: 1
     });
 

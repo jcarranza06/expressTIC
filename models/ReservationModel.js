@@ -16,9 +16,9 @@ const reservationSchema = new mongoose.Schema({
         ref: "Offer",
         required: true
     },
-    paymentType: {
-        type: String,
-        enum: ["contraentrega", "virtual", "Donacion"],
+    isPaid: {
+        type: Boolean,
+        default: false,
         required: true
     },
     quantity: {
